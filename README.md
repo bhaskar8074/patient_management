@@ -79,27 +79,6 @@ This application uses `RSpec` for testing. To run the test suite:
 bundle exec rspec
 ```
 
----
-
-## Docker Setup (Optional)
-
-If you prefer to run the application in a containerized environment:
-
-1. **Build the Docker Image**:
-   ```bash
-   docker-compose build
-   ```
-
-2. **Start the Application**:
-   ```bash
-   docker-compose up
-   ```
-
-3. **Access the Application**:
-   Open [http://localhost:3000](http://localhost:3000).
-
----
-
 ## Notes
 
 - **Appointment Logic**:
