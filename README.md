@@ -18,7 +18,6 @@ Before setting up the application, ensure you have the following installed:
 - [Ruby 3.2.0](https://www.ruby-lang.org/en/documentation/installation/)
 - [Rails 8.0.1](https://rubyonrails.org/)
 - [PostgreSQL](https://www.postgresql.org/download/)
-- [Docker](https://www.docker.com/) (optional, for containerized setup)
 
 ---
 
@@ -109,22 +108,6 @@ If you prefer to run the application in a containerized environment:
   - Configured using `Kaminari`, with a default limit of 10 patients per page.
 - **Testing**:
   - Includes model, controller, and feature specs.
-
----
-
-## Development Tools
-
-- **Bootstrap 5.3**: For basic styling.
-- **Debugging**: `web-console` and `debug` gems are included.
-- **Code Quality**: Uses `Rubocop` and `Brakeman` for static analysis.
-
----
-
-## Future Improvements
-
-- Add more detailed tests for edge cases.
-- Enhance UI/UX with advanced styling.
-- Optimize query performance for large datasets.
 
 ---
 
