@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Patient Management System</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar ml-1 mr-1" >
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <i class="fas fa-hospital-user fa-2x me-2"></i>
+          <span>Exact-Rx</span>
+        </a>
+        
+        <!-- Navbar Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <% if provider_signed_in? %>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <%= link_to patients_path, class: "nav-link #{current_page?(patients_path) ? 'active' : ''}" do %>
+                  <i class="fas fa-users me-1"></i> Patients
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to upcoming_patients_path, class: "nav-link #{current_page?(upcoming_patients_path) ? 'active' : ''}" do %>
+                  <i class="fas fa-calendar-check me-1"></i> Upcoming
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_patient_path, class: "nav-link #{current_page?(new_patient_path) ? 'active' : ''}" do %>
+                  <i class="fas fa-user-plus me-1"></i> New Patient
+                <% end %>
+              </li>
+            </ul>
+
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-md me-1"></i> Dr. <%= current_provider.full_name %>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <%= link_to edit_provider_registration_path, class: "dropdown-item" do %>
+                    <i class="fas fa-user-edit me-1"></i> Edit Profile
+                  <% end %>
+                  <div class="dropdown-divider"></div>
+                  <%= button_to destroy_provider_session_path, method: :delete, class: "dropdown-item text-danger", form: { class: "d-inline w-100" } do %>
+                    <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                  <% end %>
+                </ul>
+              </li>
+            </ul>
+          <% else %>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <%= link_to new_provider_session_path, class: "nav-link" do %>
+                  <i class="fas fa-sign-in-alt me-1"></i> Sign In
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_provider_registration_path, class: "nav-link" do %>
+                  <i class="fas fa-user-plus me-1"></i> Sign Up
+                <% end %>
+              </li>
+            </ul>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <%= render 'shared/alerts' %>
+
+      <%= yield %>
+    </div>
+  </body>
+</html>

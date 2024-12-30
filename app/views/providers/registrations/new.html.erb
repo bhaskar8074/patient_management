@@ -1,0 +1,138 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="text-center mb-4">
+        <div class="d-inline-block mb-3">
+          <i class="fas fa-hospital-user fa-3x" style="color: #3498db;"></i>
+        </div>
+        <h2 class="fw-bold" style="color: #2c3e50;">Create Account</h2>
+        <p class="text-muted">Join Exact-Rx as a healthcare provider</p>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-white py-3">
+          <h3 class="text-center mb-0">
+            <i class="fas fa-user-plus me-2"></i>Provider Registration
+          </h3>
+        </div>
+        
+        <div class="card-body p-4">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "providers/shared/error_messages", resource: resource %>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="form-floating mb-3 mb-md-0">
+                  <%= f.text_field :first_name, class: "form-control form-control-lg", 
+                      placeholder: "First name", style: "height: 60px;", autofocus: true %>
+                  <%= f.label :first_name, class: "text-muted" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <%= f.text_field :last_name, class: "form-control form-control-lg", 
+                      placeholder: "Last name", style: "height: 60px;" %>
+                  <%= f.label :last_name, class: "text-muted" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-floating mb-3">
+              <%= f.email_field :email, class: "form-control form-control-lg", 
+                  placeholder: "Email", style: "height: 60px;" %>
+              <%= f.label :email, class: "text-muted" %>
+            </div>
+
+            <div class="form-floating mb-3">
+              <%= f.password_field :password, class: "form-control form-control-lg", 
+                  placeholder: "Password", style: "height: 60px;" %>
+              <%= f.label :password, class: "text-muted" %>
+              <% if @minimum_password_length %>
+                <div class="form-text mt-2">
+                  <i class="fas fa-info-circle text-primary me-1"></i>
+                  Password must be at least <%= @minimum_password_length %> characters
+                </div>
+              <% end %>
+            </div>
+
+            <div class="form-floating mb-4">
+              <%= f.password_field :password_confirmation, class: "form-control form-control-lg", 
+                  placeholder: "Confirm password", style: "height: 60px;" %>
+              <%= f.label :password_confirmation, class: "text-muted" %>
+            </div>
+
+            <div class="d-grid gap-3">
+              <%= f.submit "Create Account", class: "btn btn-primary btn-lg py-3" %>
+              
+              <%- if devise_mapping.registerable? %>
+                <%= link_to new_session_path(resource_name), 
+                    class: "btn btn-outline-secondary btn-lg py-3" do %>
+                  <i class="fas fa-sign-in-alt me-2"></i>Back to Sign In
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <p class="text-muted small">
+          <i class="fas fa-lock me-2" style="color: #27ae60;"></i>
+          Your information is securely encrypted
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.form-floating > label {
+  padding-left: 1rem;
+}
+
+.form-floating > .form-control {
+  padding: 1rem;
+}
+
+.form-check-input:checked {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  border-color: #bdc3c7;
+}
+
+/* Error message styling */
+#error_explanation {
+  background-color: #fdf3f2;
+  border: 1px solid #fbe3e4;
+  border-radius: 8px;
+  color: #c0392b;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+#error_explanation h2 {
+  color: #c0392b;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+#error_explanation ul {
+  color: #c0392b;
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+
+.field_with_errors .form-control {
+  border-color: #e74c3c;
+}
+
+.field_with_errors .form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+}
+</style>

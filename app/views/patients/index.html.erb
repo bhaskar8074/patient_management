@@ -1,0 +1,223 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="text-primary fw-bold">
+    <i class="fas fa-users me-2"></i>Patients
+  </h1>
+  <div>
+    <%= link_to new_patient_path, class: "btn btn-primary btn-lg shadow-sm" do %>
+      <i class="fas fa-user-plus me-2"></i> Add Patient
+    <% end %>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light py-3">
+    <h5 class="mb-0">
+      <i class="fas fa-search me-2"></i>Search Filters
+    </h5>
+  </div>
+  <div class="card-body">
+    <%= search_form_for @q do |f| %>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Name</label>
+          <%= f.search_field :first_name_or_last_name_cont, 
+              class: 'form-control form-control-lg shadow-sm',
+              placeholder: 'Enter patient name' %>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Email</label>
+          <%= f.search_field :email_cont, 
+              class: 'form-control form-control-lg shadow-sm',
+              placeholder: 'Enter email' %>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Appointment Status</label>
+          <%= f.select :next_appointment_date_present,
+              [['All Appointments', ''],
+               ['Has Upcoming Appointment', true],
+               ['No Appointment Scheduled', false]],
+              {},
+              class: 'form-select form-select-lg shadow-sm' %>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">&nbsp;</label>
+          <%= f.submit 'Search', class: 'btn btn-primary btn-lg w-100 shadow-sm' %>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-4">
+          <label class="form-label">From Date</label>
+          <%= f.date_field :next_appointment_date_gteq,
+              class: 'form-control form-control-lg shadow-sm' %>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">To Date</label>
+          <%= f.date_field :next_appointment_date_lteq,
+              class: 'form-control form-control-lg shadow-sm' %>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">&nbsp;</label>
+          <%= link_to patients_path, class: 'btn btn-secondary btn-lg w-100 shadow-sm' do %>
+            <i class="fas fa-undo me-2"></i>Reset
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card shadow">
+  <div class="card-body p-0">
+    <% if @patients.any? %>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="px-4 py-3"><%= sort_link(@q, :first_name, 'Name', {}, { class: 'text-decoration-none text-dark' }) %></th>
+              <th class="px-4 py-3"><%= sort_link(@q, :email, 'Email', {}, { class: 'text-decoration-none text-dark' }) %></th>
+              <th class="px-4 py-3"><%= sort_link(@q, :next_appointment_date, 'Next Appointment', {}, { class: 'text-decoration-none text-dark' }) %></th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @patients.each do |patient| %>
+              <tr class="align-middle">
+                <td class="px-4">
+                  <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-light p-2 me-3">
+                      <i class="fas fa-user text-primary"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold"><%= patient.full_name %></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4"><%= patient.email %></td>
+                <td class="px-4">
+                  <% if patient.next_appointment_date %>
+                    <span class="badge bg-info text-white">
+                      <i class="fas fa-calendar me-1"></i>
+                      <%= patient.next_appointment_date.strftime("%B %d, %Y %I:%M %p") %>
+                    </span>
+                  <% else %>
+                    <span class="badge bg-secondary">No appointment</span>
+                  <% end %>
+                </td>
+                <td class="px-4">
+                  <div class="action-buttons">
+                    <%= link_to patient_path(patient), 
+                        class: "btn btn-icon btn-soft-info me-2", 
+                        title: "View Details",
+                        data: { 'bs-toggle': 'tooltip' } do %>
+                      <i class="fas fa-eye"></i>
+                    <% end %>
+
+                    <%= link_to edit_patient_path(patient), 
+                        class: "btn btn-icon btn-soft-primary me-2", 
+                        title: "Edit Patient",
+                        data: { 'bs-toggle': 'tooltip' } do %>
+                      <i class="fas fa-edit"></i>
+                    <% end %>
+
+                    <%= button_to patient_path(patient), 
+                        method: :delete, 
+                        class: "btn btn-icon btn-soft-danger",
+                        form: { style: 'display: inline-block' },
+                        title: "Delete Patient",
+                        data: { 
+                          turbo_confirm: 'Are you sure you want to delete this patient?',
+                          'bs-toggle': 'tooltip'
+                        } do %>
+                      <i class="fas fa-trash-alt"></i>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="text-center py-5">
+        <div class="display-1 text-muted mb-4">
+          <i class="fas fa-user-slash"></i>
+        </div>
+        <h3 class="text-muted mb-3">No patients found</h3>
+        <p class="text-muted mb-4">No patients found matching your search criteria.</p>
+        <%= link_to new_patient_path, class: "btn btn-primary btn-lg shadow" do %>
+          <i class="fas fa-user-plus me-2"></i> Add New Patient
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @patients.any? %>
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="text-muted">
+      <i class="fas fa-users me-2"></i>
+      Showing <span class="fw-bold"><%= @patients.total_count %></span> patients
+    </div>
+    <nav class="shadow-sm">
+      <%= paginate @patients%>
+    </nav>
+  </div>
+<% end %>
+
+<style>
+  .action-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.btn-icon {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-soft-info {
+  background-color: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.btn-soft-info:hover {
+  background-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-soft-primary {
+  background-color: rgba(41, 128, 185, 0.1);
+  color: #2980b9;
+}
+
+.btn-soft-primary:hover {
+  background-color: #2980b9;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-soft-danger {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.btn-soft-danger:hover {
+  background-color: #e74c3c;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Optional: Add hover shadow effect */
+.btn-icon:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
