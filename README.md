@@ -1,5 +1,3 @@
----
-
 # Patient Management System
 
 ## Overview
